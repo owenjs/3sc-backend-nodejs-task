@@ -1,7 +1,7 @@
-const path = require("path");
-const { spawn } = require("child_process");
+import path from "path";
+import { spawn } from "child_process";
 
-exports.exec = (args: string[] = []) =>
+export const exec = (args: string[] = []) =>
   new Promise<string[]>((resolve, reject) => {
     const cli = spawn("node", [path.resolve(__dirname, "../"), ...args]);
     const chunks: Uint8Array[] = [];

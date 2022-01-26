@@ -1,4 +1,4 @@
-const { exec } = require("../jest/utils");
+import { exec } from "/@jest-utils";
 
 describe("hello cli", () => {
   it("should print 'Hello!' on first line", async () => {
