@@ -62,7 +62,7 @@ const main = (temperature: string, options: { fahrenheit: boolean; celsius: bool
 };
 
 program
-  .version("0.0.1")
+  .version("1.0.0")
   .description("Temperature converter CLI Tool - by Owen Evans")
   .argument("<temperature>", "temperature to convert, converts to fahrenheit by default")
   .option("-c, --celsius", "convert temperature to celsius")

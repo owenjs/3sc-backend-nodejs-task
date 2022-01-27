@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "./bin/index.js",
   "bin": {
-    "hello": "bin/index.js"
+    "tempconvert": "bin/index.js"
   },
   "scripts": {
     "local": "yarn run build && node .",
