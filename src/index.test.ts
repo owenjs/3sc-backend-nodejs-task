@@ -73,5 +73,11 @@ describe("Temperature converter", () => {
 
       expect(output[0]).toMatch(/^[Ee]rror/);
     });
+
+    it("should return an error when the given decimal place option is a float", async () => {
+      const output = await exec("40", "-dp", "3.2");
+
+      expect(output[0]).toMatch(/^[Ee]rror/);
+    });
   });
 });
