@@ -6,7 +6,7 @@
     "hello": "bin/index.js"
   },
   "scripts": {
-    "start": "yarn run build && node .",
+    "local": "yarn run build && node .",
     "build": "tsc",
     "test": "yarn run build && jest",
     "prettier": "prettier --write ."
