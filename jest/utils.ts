@@ -1,8 +1,8 @@
 import path from "path";
 import { spawn } from "child_process";
 
-export const exec = (args: string[] = []) =>
-  new Promise<string[]>((resolve, reject) => {
+export const exec = (...args: string[]) =>
+  new Promise<string[]>(resolve => {
     const cli = spawn("node", [path.resolve(__dirname, "../"), ...args]);
     const chunks: Uint8Array[] = [];
 
@@ -11,7 +11,7 @@ export const exec = (args: string[] = []) =>
     });
 
     cli.stderr.on("data", (data: Uint8Array) => {
-      reject(data);
+      chunks.push(data);
     });
 
     cli.stdout.on("end", () => {

@@ -6,7 +6,7 @@
     "hello": "bin/index.js"
   },
   "scripts": {
-    "start": "yarn run build && node .",
+    "local": "yarn run build && node .",
     "build": "tsc",
     "test": "yarn run build && jest",
     "prettier": "prettier --write ."
@@ -24,5 +24,8 @@
     "ts-loader": "^9.2.6",
     "typescript": "^4.5.5"
   },
-  "prettier": "@3sidedcube/prettier-config"
+  "prettier": "@3sidedcube/prettier-config",
+  "dependencies": {
+    "commander": "^8.3.0"
+  }
 }
