@@ -8,6 +8,8 @@
   "scripts": {
     "start": "yarn run build && node .",
     "build": "tsc",
+    "build:bin": "babel src/index.ts -d bin --extensions \".ts\"",
+    "build:lib": "babel src -d lib --extensions \".ts\" --ignore \"src/**/*.test.ts\",\"src/index.ts\"",
     "test": "yarn run build && jest",
     "prettier": "prettier --write ."
   },
@@ -16,8 +18,14 @@
   "license": "MIT",
   "devDependencies": {
     "@3sidedcube/prettier-config": "^1.0.0",
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.12",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-typescript": "^7.16.7",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.12",
+    "babel-plugin-import-path-replace": "^0.1.0",
+    "babel-plugin-module-resolver": "^4.1.0",
     "jest": "^27.4.7",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.3",
