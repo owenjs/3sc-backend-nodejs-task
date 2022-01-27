@@ -1,63 +1,77 @@
 import { exec } from "/@jest-utils";
 
 describe("Temperature converter", () => {
-  it("should return '104' when given temperature is '40' and no options are set", async () => {
-    const output = await exec("40");
+  describe("convert temperature to fahrenheit - default", () => {
+    it("should convert correctly to fahrenheit when temperature is an integer and no options are set", async () => {
+      const output = await exec("40");
 
-    expect(output[0]).toBe("104");
+      expect(output[0]).toBe("104");
+    });
+
+    it("should convert correctly to fahrenheit when temperature is an integer and -f option is set", async () => {
+      const output = await exec("40", "-f");
+
+      expect(output[0]).toBe("104");
+    });
+
+    it("should convert correctly to fahrenheit when temperature is a float and -f option is set", async () => {
+      const output = await exec("40.35", "-f");
+
+      expect(output[0]).toBe("104.63");
+    });
+
+    it("should return the minimal number of decimal places even when the -dp option is set to 3", async () => {
+      const output = await exec("40.35", "-f", "-dp", "3");
+
+      expect(output[0]).toBe("104.63");
+    });
   });
 
-  it("should return '104' when given temperature is '40' and -f option is set", async () => {
-    const output = await exec("40", "-f");
+  describe("convert temperature to celsius", () => {
+    it("should convert correctly to celsius when temperature is an integer and -c option is set", async () => {
+      const output = await exec("40", "-c");
 
-    expect(output[0]).toBe("104");
+      expect(output[0]).toBe("4.44");
+    });
+
+    it("should convert correctly to celsius when temperature is a float and -c option is set", async () => {
+      const output = await exec("40.35", "-c");
+
+      expect(output[0]).toBe("4.64");
+    });
+
+    it("should convert correctly to celsius and round result to 3 decimal places when the -dp option is set to 3 and -c option is set", async () => {
+      const output = await exec("40.35", "-c", "-dp", "3");
+
+      expect(output[0]).toBe("4.639");
+    });
   });
 
-  it("should return '4.44' when given temperature is '40' and -c option is set", async () => {
-    const output = await exec("40", "-c");
+  describe("errors", () => {
+    const errorRegex = /^[Ee]rror/;
 
-    expect(output[0]).toBe("4.44");
-  });
+    it("should return an error message when no temperature is given", async () => {
+      const output = await exec();
 
-  it("should return '104.63' when given temperature is '40.35' and -f option is set", async () => {
-    const output = await exec("40.35", "-f");
+      expect(output[0]).toMatch(errorRegex);
+    });
 
-    expect(output[0]).toBe("104.63");
-  });
+    it("should return an error message when given temperature isn't a number", async () => {
+      const output = await exec("NaN");
 
-  it("should return '4.64' when given temperature is '40.35' and -c option is set", async () => {
-    const output = await exec("40.35", "-c");
+      expect(output[0]).toMatch(errorRegex);
+    });
 
-    expect(output[0]).toBe("4.64");
-  });
+    it("should return an error when no decimal place is given when the -dp option is present", async () => {
+      const output = await exec("40", "-dp");
 
-  it("should return error message when given temperature isn't a number", async () => {
-    const output = await exec("NaN");
+      expect(output[0]).toMatch(/^[Ee]rror/);
+    });
 
-    expect(output[0]).toMatch(/^[Ee]rror/);
-  });
+    it("should return an error when the given decimal place option isn't a number", async () => {
+      const output = await exec("40", "-dp", "NaN");
 
-  it("should return '104.63' when given temperature is '40.35' and -f option is set and -dp option is set to 3", async () => {
-    const output = await exec("40.35", "-f", "-dp", "3");
-
-    expect(output[0]).toBe("104.63");
-  });
-
-  it("should return '4.639' when given temperature is '40.35' and -c option is set and -dp option is set to 3", async () => {
-    const output = await exec("40.35", "-c", "-dp", "3");
-
-    expect(output[0]).toBe("4.639");
-  });
-
-  it("should return an error when no decimal place is given when the -dp option is present", async () => {
-    const output = await exec("40", "-dp");
-
-    expect(output[0]).toMatch(/^[Ee]rror/);
-  });
-
-  it("should return an error when the given decimal place option isn't a number", async () => {
-    const output = await exec("40", "-dp", "NaN");
-
-    expect(output[0]).toMatch(/^[Ee]rror/);
+      expect(output[0]).toMatch(/^[Ee]rror/);
+    });
   });
 });
