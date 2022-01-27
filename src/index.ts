@@ -1,5 +1,14 @@
 #!/usr/bin/env node
 
-console.log("Hello!");
+import { Command } from "commander";
+const program = new Command();
 
-console.log("Hello Again!");
+program
+  .version("0.0.1")
+  .description("Temperature converter CLI Tool - by Owen Evans")
+  .argument("<temperature>", "temperature to convert")
+  .parse(process.argv);
+
+const options = program.opts();
+
+program.outputHelp();
