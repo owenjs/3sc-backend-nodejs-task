@@ -1,4 +1,4 @@
-import { exec } from "/@jest-utils";
+import { exec } from "./utils";
 
 describe("Temperature converter", () => {
   describe("convert temperature to fahrenheit - default", () => {
