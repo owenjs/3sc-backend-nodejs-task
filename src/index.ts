@@ -5,14 +5,60 @@ const program = new Command();
 
 type TempConvertor = (temp: number) => number;
 
-// multiply by 9/5 and add 32
-const toFahrenheit: TempConvertor = f => f * (9 / 5) + 32;
+/**
+ * Convert Celsius to Fahrenheit
+ *  - multiply by 9/5 and add 32
+ *
+ * @param temp temperature to convert
+ * @return number converted temperature
+ */
+const toFahrenheit: TempConvertor = temp => temp * (9 / 5) + 32;
 
-// subtract 32 and multiply by 5/9
-const toCelsius: TempConvertor = c => (c - 32) * (5 / 9);
+/**
+ * Convert Fahrenheit to Celsius
+ *  - subtract 32 and multiply by 5/9
+ *
+ * @param temp temperature to convert
+ * @return number converted temperature
+ */
+const toCelsius: TempConvertor = temp => (temp - 32) * (5 / 9);
 
+/**
+ * Round to x decimal places
+ *
+ * @param num number to round
+ * @param dp number of decimal place to round, default = 2
+ * @return number rounded number
+ */
 const round = (num: number, dp: number = 2): number => {
   return +(Math.round(Number(num + "e+" + dp)) + "e-" + dp);
+};
+
+/**
+ * Will fire when the cli tool is invoked
+ *
+ * @param temperature the temperature to convert
+ * @param options object of the possible options for the program
+ */
+const main = (temperature: string, options: { fahrenheit: boolean; celsius: boolean; decimalPlace: string }) => {
+  let temp = parseFloat(temperature);
+  let dp = options.decimalPlace ? parseInt(options.decimalPlace) : 2;
+
+  if (Number.isNaN(temp)) {
+    console.error(new Error("<temperature> needs to be a number"));
+    return;
+  }
+
+  if (Number.isNaN(dp)) {
+    console.error(new Error("-dp <dp> needs to be a number"));
+    return;
+  }
+
+  temp = options.celsius ? toCelsius(temp) : toFahrenheit(temp);
+
+  temp = round(temp, dp);
+
+  console.log(temp);
 };
 
 program
@@ -25,25 +71,6 @@ program
     "-dp, --decimalPlace <dp>",
     "number of decimal place the returned temperature will be rounded to, default is 2dp"
   )
-  .action((temperature: string, options: { fahrenheit: boolean; celsius: boolean; decimalPlace: string }) => {
-    let temp = parseFloat(temperature);
-    let dp = options.decimalPlace ? parseInt(options.decimalPlace) : 2;
-
-    if (Number.isNaN(temp)) {
-      console.error(new Error("<temperature> needs to be a number"));
-      return;
-    }
-
-    if (Number.isNaN(dp)) {
-      console.error(new Error("-dp <dp> needs to be a number"));
-      return;
-    }
-
-    temp = options.celsius ? toCelsius(temp) : toFahrenheit(temp);
-
-    temp = round(temp, dp);
-
-    console.log(temp);
-  });
+  .action(main);
 
 program.parse(process.argv);
